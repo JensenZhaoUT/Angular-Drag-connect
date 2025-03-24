@@ -1,8 +1,33 @@
-<div class="container">
-  <div
-    class="node"
-    *ngFor="let node of nodes"
+<!-- app.component.html -->
+<div 
+  class="container"
+  (click)="addNode($event)"
+  (mousemove)="onDrag($event)" 
+  (mouseup)="endDrag()"
+  (contextmenu)="$event.preventDefault()"
+>
+  <!-- SVG line layer -->
+  <svg class="svg-layer">
+    <line *ngFor="let conn of connections"
+      [attr.x1]="getNodeCenter(conn.from).x"
+      [attr.y1]="getNodeCenter(conn.from).y"
+      [attr.x2]="getNodeCenter(conn.to).x"
+      [attr.y2]="getNodeCenter(conn.to).y"
+      stroke="black"
+      stroke-width="2"
+      (contextmenu)="deleteConnection(conn); $event.preventDefault()"
+    />
+  </svg>
+
+  <!-- Node elements -->
+  <div 
+    class="node" 
+    *ngFor="let node of nodes" 
     [ngStyle]="{ top: node.y + 'px', left: node.x + 'px' }"
+    (mousedown)="startDrag($event, node); $event.stopPropagation()"
+    (click)="connectNode(node); $event.stopPropagation()"
+    (contextmenu)="deleteNode(node); $event.preventDefault()"
+    [class.selected]="selectedNode?.id === node.id"
   >
     {{ node.label }}
   </div>

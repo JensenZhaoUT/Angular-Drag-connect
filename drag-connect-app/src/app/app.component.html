@@ -1,0 +1,9 @@
+<div class="container">
+  <div
+    class="node"
+    *ngFor="let node of nodes"
+    [ngStyle]="{ top: node.y + 'px', left: node.x + 'px' }"
+  >
+    {{ node.label }}
+  </div>
+</div>
